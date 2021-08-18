@@ -6,15 +6,13 @@ let handleLongin = async (req, res) => {
 
   if (!email || !password) {
     return res.status(500).json({
-      errCode: 1,
+      errcode: 1,
       message: "missing imputs parameter! ",
     });
   }
 
   let userData = await userService.handleUserLogin(email, password);
-  console.log(userData.errCode);
-  console.log(userData.erroMessage);
-  console.log(userData);
+
   //   check email exits
   //   compare password
   //   return userInfor
