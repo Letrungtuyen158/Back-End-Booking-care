@@ -26,10 +26,10 @@ const handleLongin = async (req, res) => {
 };
 
 const handleGetAllUsers = async (req,res) =>{
-  let id = req.body.id
+  let id = req.query.id
 
   if(!id) {
-    return res.status(500).json({
+    return res.status(200).json({
       errcode: 1,
       message: "missing parameters",
       users:[]
@@ -46,8 +46,29 @@ const handleGetAllUsers = async (req,res) =>{
 
 
 }
+const handleCreateUser = async(req,res) =>{
+    
+    let message =  await userService.createNewUser(req.body);
+    return res.status(200).json(message);
+}
+const handleEditUsers = async(req,res) =>{
+
+}
+const handleDeleteUsers = async(req,res) =>{
+    if(!req.body.id){
+         return res.status(200).json({
+           errCode: 1 ,
+           message: 'missing Id parameters !!'
+         })
+    }
+  let message =  await userService.deleteUser(req.body.id);
+    return res.status(200).json(message);
+}
 
 module.exports = {
   handleLongin: handleLongin,
   handleGetAllUsers : handleGetAllUsers,
+  handleCreateUser:handleCreateUser,
+  handleEditUsers:handleEditUsers,
+  handleDeleteUsers:handleDeleteUsers,
 };
