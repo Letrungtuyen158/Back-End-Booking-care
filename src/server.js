@@ -7,7 +7,7 @@ import cors from "cors";
 
 require("dotenv").config();
 
-let app = express();
+const app = express();
 app.use(cors({ origin: true }));
 
 // config app
@@ -20,7 +20,7 @@ initWebRoutes(app);
 
 connectDB();
 
-let port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
   console.log("backend nodejs is runing on the port :" + port);

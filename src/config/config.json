@@ -2,10 +2,12 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "hoidanit",
+    "database": "bookingcare",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "logging": false
+    "logging": false,
+    "query" : {"raw":true},
+    "timezone": "+07:00"
   },
   "test": {
     "username": "root",
