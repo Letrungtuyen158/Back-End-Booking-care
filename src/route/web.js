@@ -13,6 +13,7 @@ let initWebRoutes = (app) => {
   router.get("/get-crud", homeController.displayGetCRUD);
   router.get("/edit-crud", homeController.getEditCRUD);
 
+  //Manage User
   router.post("/api/login", userController.handleLongin);
   router.get("/api/get-all-users", userController.handleGetAllUsers)
   router.post('/api/create-new-users',userController.handleCreateUser)

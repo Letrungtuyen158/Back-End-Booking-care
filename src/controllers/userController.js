@@ -47,12 +47,14 @@ const handleGetAllUsers = async (req,res) =>{
 
 }
 const handleCreateUser = async(req,res) =>{
-    
-    let message =  await userService.createNewUser(req.body);
+    const data = req.body
+    const message =  await userService.createNewUser(data);
     return res.status(200).json(message);
 }
 const handleEditUsers = async(req,res) =>{
-
+         const data = req.body;
+         const message = await  userService.updateUserData(data)
+         return res.status(200).json(message)
 }
 const handleDeleteUsers = async(req,res) =>{
     if(!req.body.id){
@@ -64,6 +66,7 @@ const handleDeleteUsers = async(req,res) =>{
   let message =  await userService.deleteUser(req.body.id);
     return res.status(200).json(message);
 }
+
 
 module.exports = {
   handleLongin: handleLongin,

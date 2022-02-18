@@ -144,6 +144,7 @@ const deleteUser = (userId) => {
           errMessage: "The User isn't exist !!",
         });
       }
+      // query db delete use
       await db.User.destroy({ where: { id: userId } });
 
       resolve({
@@ -155,10 +156,44 @@ const deleteUser = (userId) => {
     }
   });
 };
+const updateUserData = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.id) {
+        resolve({
+          errCode: 2,
+          message: "Missing parametor id",
+        });
+      }
+      let user = await db.User.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (user) {
+        (user.firstName = data.firstName),
+          (user.lastName = data.lastName),
+          (user.address = data.address);
+        await user.save();
+        resolve({
+          errCode: 0,
+          message: "update the user success",
+        });
+      } else {
+        resolve({
+          errCode: 1,
+          errMessage: "User's not found!",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 module.exports = {
   handleUserLogin: handleUserLogin,
   getAllUsers: getAllUsers,
   createNewUser: createNewUser,
   deleteUser: deleteUser,
+  updateUserData: updateUserData,
 };
