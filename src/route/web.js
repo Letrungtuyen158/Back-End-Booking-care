@@ -19,6 +19,9 @@ let initWebRoutes = (app) => {
 
   router.get("/api/top-doctor-home", doctorController.getTopDoctorController);
 
+  router.get("/api/get-all-doctors", doctorController.getAllDoctors);
+  router.post("/api/save-infor-doctors", doctorController.postInforDoctor);
+
   return app.use("/", router);
 };
 
