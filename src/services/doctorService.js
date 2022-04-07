@@ -1,4 +1,8 @@
 import db from "../models/index";
+require("dotenv").config();
+import _, { reject } from "lodash";
+
+const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 
 const getTopDoctorHome = (limitInput) => {
   return new Promise(async (resolve, reject) => {
@@ -141,9 +145,54 @@ const getDetailDoctorById = (inputId) => {
     }
   });
 };
+const bulkCreateSchedule = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.arrSchedule || !data.doctorId || !data.formateDate) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required param",
+        });
+      } else {
+        let schedule = data.arrSchedule;
+        if (schedule && schedule.length > 0) {
+          schedule = schedule.map((item) => {
+            item.maxNumber = MAX_NUMBER_SCHEDULE;
+            return item;
+          });
+        }
+        // get all exisiting data
+        let existing = await db.Schedule.findAll({
+          where: { doctorId: data.doctorId, date: data.formateDate },
+          attributes: ["timeType", "date", "doctorId", "maxNumber"],
+          raw: true,
+        });
+        if (existing && existing.length > 0) {
+          existing = existing.map((item) => {
+            item.data = new DataTransfer(item.date).getTime();
+            return item;
+          });
+        }
+        let toCreate = _.difference(schedule, existing, (a, b) => {
+          return a.timeType === b.timeType && a.date === b.date;
+        });
+        if (toCreate && toCreate.length > 0) {
+          await db.Schedule.bulkCreate(toCreate);
+        }
+        resolve({
+          errCode: 0,
+          errMessage: "oke",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctors: getAllDoctors,
   saveDetailInforDoctor: saveDetailInforDoctor,
   getDetailDoctorById: getDetailDoctorById,
+  bulkCreateSchedule: bulkCreateSchedule,
 };
