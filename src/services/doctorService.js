@@ -167,14 +167,9 @@ const bulkCreateSchedule = (data) => {
           attributes: ["timeType", "date", "doctorId", "maxNumber"],
           raw: true,
         });
-        if (existing && existing.length > 0) {
-          existing = existing.map((item) => {
-            item.data = new DataTransfer(item.date).getTime();
-            return item;
-          });
-        }
+
         let toCreate = _.difference(schedule, existing, (a, b) => {
-          return a.timeType === b.timeType && a.date === b.date;
+          return a.timeType === b.timeType && +a.date === +b.date;
         });
         if (toCreate && toCreate.length > 0) {
           await db.Schedule.bulkCreate(toCreate);
@@ -203,6 +198,15 @@ const getScheduleByDate = (doctorId, date) => {
             doctorId: doctorId,
             date: date,
           },
+          include: [
+            {
+              model: db.Allcode,
+              as: "timeTypeData",
+              atrributes: ["valueEn", "valueVi"],
+            },
+          ],
+          raw: false,
+          mest: true,
         });
         if (!dataSchedule) dataSchedule = [];
 
