@@ -25,6 +25,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "mysql2": "^2.2.5",
+    "nodemailer": "^6.6.3",
     "sequelize": "^6.6.2"
   },
   "devDependencies": {
