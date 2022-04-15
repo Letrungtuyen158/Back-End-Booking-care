@@ -262,6 +262,11 @@ const getScheduleByDate = (doctorId, date) => {
               as: "timeTypeData",
               atrributes: ["valueEn", "valueVi"],
             },
+            {
+              model: db.User,
+              as: "doctorData",
+              atrributes: ["firstName", "lastName"],
+            },
           ],
           raw: false,
           mest: true,
