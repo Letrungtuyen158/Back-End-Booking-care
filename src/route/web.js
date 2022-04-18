@@ -47,6 +47,10 @@ let initWebRoutes = (app) => {
     "/api/verify-book-appointment",
     patientController.postVerifyBookAppointment
   );
+  router.get(
+    "api/get-list-patient-for-doctor",
+    doctorController.getListPatientForDoctor
+  );
 
   return app.use("/", router);
 };
